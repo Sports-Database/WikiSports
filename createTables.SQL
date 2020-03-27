@@ -1,6 +1,7 @@
 create table if not exists teams(
     id int not null primary key,
-    name varchar(100) not null
+    name varchar(100) not null,
+    season year not null
 );
 
 create table if not exists players(
@@ -16,29 +17,29 @@ create table if not exists playerStats(
     # type in a 4 digit season or the word 'Career' to see season stats or career stats
     seasonOrCareer varchar(20) not null,
     earnings int,
-    TD int,
-    Tk int,
-    Yds int,
-    YdsG int,
-    Sk int,
-    Fum int,
-    Cmp int,
+    touchdowns int,
+    tackles int,
+    yards int,
+    yardsPerGame int,
+    sacks int,
+    fumbles int,
+    completions int,
     foreign key (playerId) references players(id)
 );
 
 create table if not exists teamStats(
     teamId int not null,
-    seasonOrCareer varchar(20) not null,
+    season year not null,
     numTitle int not null,
-    W int,
-    L int,
-    TD int,
-    Tk int,
-    Yds int,
-    YdsG int,
-    Sk int,
-    Fum int,
-    Cmp int,
+    wins int,
+    losses int,
+    touchdowns int,
+    tackles int,
+    yards int,
+    yardsPerGame int,
+    sacks int,
+    fumbles int,
+    completions int,
     foreign key (teamId) references teams(id)
 );
 
@@ -52,12 +53,12 @@ create table if not exists league(
     MVP int not null,
     passingLeader int not null,
     rushingLeader int not null,
-    TDLeader int not null,
+    touchdownLeader int not null,
     champion int not null,
     foreign key (MVP) references players(id),
     foreign key (passingLeader) references players(id),
     foreign key (rushingLeader) references players(id),
-    foreign key (TDLeader) references players(id),
+    foreign key (touchdownLeader) references players(id),
     foreign key (champion) references teams(id)
 );
 
