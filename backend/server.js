@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 
 //Connect to MySQL
 var con = mysql.createConnection({
-  host: "mysql_mysql_1",
+  host: "backend_mysql_1",
   port: "3306",
   user: "wiki-sport-main",
   password: "wikisport",
