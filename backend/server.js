@@ -1,50 +1,27 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
+const mysqlConnection = require("./connections")
+var mysql = require('mysql')
+
+//routes
+const acronymRoutes = require("./routes/acronyms")
+const leagueRoutes = require("./routes/league")
+const playerRoutes = require("./routes/players")
+const playerStatRoutes = require("./routes/playerStats")
+const teamRoutes = require("./routes/teams")
+const teamStatsRoutes = require("./routes/teamStats")
+
+
 
 app.use(express.json());
 
-var mysql = require('mysql');
+app.use("/acronyms", acronymRoutes)
+app.use("/league", leagueRoutes)
+app.use("/players", playerRoutes)
+app.use("/playerStats", playerStatRoutes)
+app.use("/teams", teamRoutes)
+app.use("/teamStats", teamStatsRoutes)
 
-app.get('/', (req, res) => {
-	res.send('hi WORLD!')
-})
-
-//Connect to MySQL
-var con = mysql.createConnection({
-  host: "backend_mysql_1",
-  port: "3306",
-  user: "wiki-sport-main",
-  password: "wikisport",
-  database: "example"
-});
-
-//Open Connection
-con.connect(function(err) {
-	  if (err) throw err;
-});
-
-// create router
-var router = express.Router();
-
-// middleware to use for all requests
-router.use(function(req, res, next) {
-	// do logging
-	console.log('Something is happening.');
-	next();
-});//
-
-
-//GET
-// /api/getit
-router.get('/getit', function (req, res) {
-	con.query("SELECT * FROM t1", function (err, result, fields) {
-		if (err) throw err;
-		res.end(JSON.stringify(result)); // Result in JSON format
-	});
-});
-
-// REGISTER  ROUTES
-app.use('/api', router);
 
 //PORT ENVIRONMENT VARIABLE
 const port = process.env.PORT || 8080;
