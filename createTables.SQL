@@ -16,11 +16,11 @@ create table if not exists seasons(
 
 create table if not exists games(
 	id int not null primary key,
-	team1Id int not null,
-	team2Id int not null,
+	homeId int not null,
+	visitorId int not null,
 	seasonId int not null,
-	foreign key (team1Id) references teams(id),
-    foreign key (team2Id) references teams(id),
+	foreign key (homeId) references teams(id),
+    foreign key (visitorId) references teams(id),
     foreign key (seasonId) references seasons(id)
 );
 
