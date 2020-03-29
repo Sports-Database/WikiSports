@@ -12,9 +12,12 @@ Router.get("/", (req,res) =>{
     console.log("Got out of query")
 })
 
+
+// search for player by name
 Router.get("/:playerName", (req,res) =>{
     let pName = req.params.playerName
     let arr = pName.split(' ')
+    console.log(`looking for ${arr[1]} ${arr[0]}`)
     mysqlConnection.query(`
         SELECT p.id, p.name, p.position, 
             (select count(*) from touchdowns 
@@ -38,7 +41,7 @@ Router.get("/:playerName", (req,res) =>{
         INNER JOIN
         earnings e
         on p.id = e.playerId
-        WHERE players.name = ${arr[1]}, ${arr[0]};
+        WHERE p.name = '${arr[1]}, ${arr[0]}'
         group by p.id;` , 
         (err, rows, fields)=>{
             if(err) throw err
