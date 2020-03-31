@@ -14,7 +14,7 @@ Router.get("/", (req,res) =>{
 
 
 // search for player by name
-Router.get("/:playerName", (req,res) =>{
+Router.get("/stats/:playerName", (req,res) =>{
     let pName = req.params.playerName
     let arr = pName.split(' ')
     console.log(`looking for ${arr[1]} ${arr[0]}`)
@@ -26,23 +26,57 @@ Router.get("/:playerName", (req,res) =>{
             sum(t.tackles) 'tackles', sum(f.fumbles) 'fumbles',
             sum(e.earnings) 'earnings'
         FROM players p
-        INNER JOIN
+        LEFT JOIN
         touchdowns td
         on p.id = td.playerID
-        INNER JOIN
+        LEFT JOIN
         yards y
         on p.id = y.playerID
-        INNER JOIN
+        LEFT JOIN
         tackles t
         on p.id = t.playerId
-        INNER JOIN 
+        LEFT JOIN 
         fumbles f
         on p.id = f.playerId
-        INNER JOIN
+        LEFT JOIN
         earnings e
         on p.id = e.playerId
         WHERE p.name = '${arr[1]}, ${arr[0]}'
         group by p.id;` , 
+        (err, rows, fields)=>{
+            if(err) throw err
+            res.end(JSON.stringify(rows));
+        })
+})
+
+Router.get("/mvp", (req,res) =>{
+    mysqlConnection.query(`
+        select season, players.name as 'MVP'
+        from league
+        inner join seasons
+        on seasons.id = league.seasonId
+        inner join players
+        on players.id = MVPId;
+           ` , 
+        (err, rows, fields)=>{
+            if(err) throw err
+            res.end(JSON.stringify(rows));
+        })
+})
+
+Router.get("/earnings/:playerName", (req,res) =>{
+    let pName = req.params.playerName
+    let arr = pName.split(' ')
+    mysqlConnection.query(`
+        SELECT players.id, name, SUM(earnings) as 'career_earnings'
+        FROM players
+        INNER JOIN
+        earnings e
+        ON e.playerId = players.id
+        WHERE name = '${arr[1]}, ${arr[0]}'
+        group by players.id
+        order by id;
+           ` , 
         (err, rows, fields)=>{
             if(err) throw err
             res.end(JSON.stringify(rows));
