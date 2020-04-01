@@ -1,0 +1,36 @@
+version: '2.1'
+services:
+  wiki-sports-db:
+    build: ./backend/mysql/db
+    restart: always
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: 'wiki_sports'
+      MYSQL_USER: 'wiki-sport-main'
+      MYSQL_PASSWORD: 'wikisport'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports: 
+      - 3306:3306
+    volumes:
+      - wiki-sports_vol:/var/lib/mysql
+    # networks:
+    #   - backend
+    healthcheck:
+      test: "exit 0"
+
+
+  app:
+    build: ./backend
+    restart: always
+    depends_on:
+      wiki-sports-db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+
+# networks:
+#   backend:
+
+volumes:
+  wiki-sports_vol:
