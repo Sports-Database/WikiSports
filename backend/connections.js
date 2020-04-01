@@ -1,7 +1,7 @@
 //Connect to MySQL
 var mysql = require('mysql')
 var mysqlConnection = mysql.createConnection({
-    host: "backend_mysql_1",
+    host: "wikisports_wiki-sports-db_1",
     port: "3306",
     user: "wiki-sport-main",
     password: "wikisport",
