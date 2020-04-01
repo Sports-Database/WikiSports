@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
-// const mysqlConnection = require("./connections")
-// var mysql = require('mysql')
+var mysql = require('mysql')
+const mysqlConnection = require("./connections")
+
 
 //routes
 const acronymRoutes = require("./routes/acronyms")
