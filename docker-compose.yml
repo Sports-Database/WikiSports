@@ -9,8 +9,9 @@ services:
       MYSQL_USER: 'wiki-sport-main'
       MYSQL_PASSWORD: 'wikisport'
       MYSQL_ROOT_PASSWORD: 'password'
+    command: --default-authentication-plugin=mysql_native_password
     ports: 
-      - 3306:3306
+      - 3351:3306
     volumes:
       - wiki-sports_vol:/var/lib/mysql
     # networks:
