@@ -1,12 +1,10 @@
 
-CREATE DATABASE IF NOT EXISTS wiki_sports;
+create table wiki_sports.teams(
+    id int not null primary key,
+    name varchar(100) not null
+);
 
--- USE wiki_sports;
 
--- create table wiki_sports.teams(
---     id int not null primary key,
---     name varchar(100) not null
--- );
 
 -- create table if not exists players(
 --     id int not null primary key,
@@ -103,16 +101,14 @@ CREATE DATABASE IF NOT EXISTS wiki_sports;
 
 
 -- -- create user called `manager` with password `Password`
--- CREATE USER 'wiki-sport-main'@'%' IDENTIFIED BY 'wikisport';
+CREATE USER 'wiki-sport-main'@'%' IDENTIFIED BY 'wikisport';
 
--- -- give access to manager on db
--- GRANT ALL PRIVILEGES ON *.* TO 'wiki-sport-main'@'%';
+-- give access to manager on db
+GRANT ALL PRIVILEGES ON *.* TO 'wiki-sport-main'@'%';
 
--- -- set password method to native password for mysql workbench access (mysql 8 issue)
--- ALTER USER 'wiki-sport-main'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'wikisport';
+-- set password method to native password for mysql workbench access (mysql 8 issue)
+ALTER USER 'wiki-sport-main'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'wikisport';
 
--- FLUSH PRIVILEGES;
+FLUSH PRIVILEGES;
 
--- ALTER USER 'wiki-sport-main'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'wikisport';
-
--- ALTER USER 'root'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'password';
+ALTER USER 'wiki-sport-main'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'wikisport';
