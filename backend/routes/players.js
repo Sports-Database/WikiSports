@@ -20,11 +20,11 @@ Router.get("/careerstats/:playerName", (req,res) =>{
     console.log(`looking for ${arr[1]} ${arr[0]}`)
     mysqlConnection.query(`
         SELECT p.id, p.name, p.position, 
-            (select count(*) from touchdowns 
-            where touchdowns.playerId = p.id) as 'total_games',
-            sum(td.touchdowns) 'touchdowns', sum(y.yards) 'yards',
-            sum(t.tackles) 'tackles', sum(f.fumbles) 'fumbles',
-            sum(e.earnings) 'earnings'
+        (select count(*) from touchdowns 
+        where touchdowns.playerId = p.id) as 'total_games',
+        sum(td.touchdowns) 'touchdowns', sum(y.yards) 'yards',
+        sum(t.tackles) 'tackles', sum(f.fumbles) 'fumbles',
+        sum(e.earnings) 'earnings', te.name as 'current_team'
         FROM players p
         LEFT JOIN
         touchdowns td
@@ -41,15 +41,25 @@ Router.get("/careerstats/:playerName", (req,res) =>{
         LEFT JOIN
         earnings e
         on p.id = e.playerId
+        LEFT JOIN
+        rosters r
+        on r.playerId = p.id
+        LEFT JOIN
+        teams te
+        on r.teamId = te.id
+        left join
+        seasons s
+        on s.id = r.seasonId AND s.season = 2020
         WHERE p.name = '${arr[1]}, ${arr[0]}'
-        group by p.id;` , 
+        group by p.id, te.id; 
+                        ` , 
         (err, rows, fields)=>{
             if(err) throw err
             res.end(JSON.stringify(rows));
         })
 })
 
-Router.get("/stats/:playerName", (req,res) =>{
+Router.get("/stats/:playerName", (req,res) =>{ // still working on this
     let pName = req.params.playerName
     let arr = pName.split(' ')
     console.log(`looking for ${arr[1]} ${arr[0]}`)
