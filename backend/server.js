@@ -1,8 +1,17 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+const bodyParser = require('body-parser')
 var mysql = require('mysql')
 const mysqlConnection = require("./connections")
 
+
+app.use(bodyParser.json());
+app.use(cors({
+  origin: '*'
+}));
+
+app.use(express.json());
 
 //routes
 const acronymRoutes = require("./routes/acronyms")
@@ -12,7 +21,7 @@ const teamRoutes = require("./routes/teams")
 
 
 
-app.use(express.json());
+
 
 app.use("/acronyms", acronymRoutes)
 app.use("/league", leagueRoutes)
