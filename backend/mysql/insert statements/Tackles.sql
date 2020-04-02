@@ -5,7 +5,7 @@ insert into tackles (playerId, gameId, tackles) values (212, 3, 13);
 insert into tackles (playerId, gameId, tackles) values (69, 16, 19);
 insert into tackles (playerId, gameId, tackles) values (75, 6, 6);
 insert into tackles (playerId, gameId, tackles) values (400, 15, 11);
-insert into tackles (playerId, gameId, tackles) values (114, 34, 14);
+-- insert into tackles (playerId, gameId, tackles) values (114, 34, 14);
 insert into tackles (playerId, gameId, tackles) values (156, 17, 3);
 insert into tackles (playerId, gameId, tackles) values (272, 32, 17);
 insert into tackles (playerId, gameId, tackles) values (351, 36, 7);

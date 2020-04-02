@@ -24,6 +24,14 @@ Router.get("/eli", (req,res) =>{
     console.log("Got out of query with eli")
 })
 
+Router.get("/help/:acronymName", (req,res) =>{
+    let aName = req.params.acronymName
+    mysqlConnection.query(`SELECT * FROM acronyms WHERE acronym = '${aName}';` , (err, rows, fields)=>{
+        if(err) throw err
+        res.end(JSON.stringify(rows));
+    })
+})
+
 
 
 

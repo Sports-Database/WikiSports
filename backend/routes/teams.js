@@ -14,7 +14,6 @@ Router.get("/", (req,res) =>{
 
 Router.get("/championships/:teamName", (req,res) =>{
     let tName = req.params.teamName
-    console.log('Doing championshps')
     mysqlConnection.query(`
         SELECT name, season
         FROM teams
@@ -31,7 +30,43 @@ Router.get("/championships/:teamName", (req,res) =>{
     })
 })
 
-Router.get("/searchTeam/:teamName", (req,res) =>{
+Router.get("/about/:teamName", (req,res) =>{
+    let tName = req.params.teamName
+    mysqlConnection.query(`
+        select s.season, p.name, championships.wins as 'team_has_won' from seasons s
+        join
+        rosters r
+        on s.id = r.seasonId
+        join
+        players p
+        on p.id = r.playerId
+        join
+        teams t
+        on t.id = r.teamId
+        left join
+        league
+        on league.championId = teamId
+        left join
+        (SELECT name, season, count(season) as 'wins'
+                FROM teams
+                LEFT OUTER JOIN
+                league l
+                on championId = teams.id
+                LEFT OUTER JOIN
+                seasons s
+                on s.id = l.seasonId
+                group by name, season) championships
+        on championships.name = t.name
+        where t.name = '${tName}'
+        order by t.id;
+    ` , (err, rows, fields)=>{
+        if(err) throw err
+        res.end(JSON.stringify(rows));
+    })
+})
+
+
+Router.get("/teamCareerStats/:teamName", (req,res) =>{
     let tName = req.params.teamName
     mysqlConnection.query(`
         select p.name, position, touchdowns, yards, tackles, fumbles, earnings

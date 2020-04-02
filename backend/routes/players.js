@@ -14,6 +14,41 @@ Router.get("/", (req,res) =>{
 
 
 // search for player by name
+Router.get("/careerstats/:playerName", (req,res) =>{
+    let pName = req.params.playerName
+    let arr = pName.split(' ')
+    console.log(`looking for ${arr[1]} ${arr[0]}`)
+    mysqlConnection.query(`
+        SELECT p.id, p.name, p.position, 
+            (select count(*) from touchdowns 
+            where touchdowns.playerId = p.id) as 'total_games',
+            sum(td.touchdowns) 'touchdowns', sum(y.yards) 'yards',
+            sum(t.tackles) 'tackles', sum(f.fumbles) 'fumbles',
+            sum(e.earnings) 'earnings'
+        FROM players p
+        LEFT JOIN
+        touchdowns td
+        on p.id = td.playerID
+        LEFT JOIN
+        yards y
+        on p.id = y.playerID
+        LEFT JOIN
+        tackles t
+        on p.id = t.playerId
+        LEFT JOIN 
+        fumbles f
+        on p.id = f.playerId
+        LEFT JOIN
+        earnings e
+        on p.id = e.playerId
+        WHERE p.name = '${arr[1]}, ${arr[0]}'
+        group by p.id;` , 
+        (err, rows, fields)=>{
+            if(err) throw err
+            res.end(JSON.stringify(rows));
+        })
+})
+
 Router.get("/stats/:playerName", (req,res) =>{
     let pName = req.params.playerName
     let arr = pName.split(' ')
@@ -49,6 +84,36 @@ Router.get("/stats/:playerName", (req,res) =>{
         })
 })
 
+
+Router.get("/:stat", (req,res) =>{
+    let statName = req.params.stat
+    mysqlConnection.query(`
+        SELECT p.id, p.name, sum(${statName}) as '${statName}'
+        FROM players p
+        LEFT JOIN
+        touchdowns td
+        on p.id = td.playerID
+        LEFT JOIN
+        yards y
+        on p.id = y.playerID
+        LEFT JOIN
+        tackles t
+        on p.id = t.playerId
+        LEFT JOIN 
+        fumbles f
+        on p.id = f.playerId
+        LEFT JOIN
+        earnings e
+        on p.id = e.playerId
+        WHERE ${statName} is not null
+        group by p.id;` , 
+        (err, rows, fields)=>{
+            if(err) throw err
+            res.end(JSON.stringify(rows));
+        })
+})
+
+
 Router.get("/mvp", (req,res) =>{
     mysqlConnection.query(`
         select season, players.name as 'MVP'
@@ -82,5 +147,7 @@ Router.get("/earnings/:playerName", (req,res) =>{
             res.end(JSON.stringify(rows));
         })
 })
+
+
 
 module.exports = Router
