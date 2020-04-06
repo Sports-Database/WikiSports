@@ -1,4 +1,5 @@
 version: '2.1'
+
 services:
   wiki-sports-db:
     build: ./backend/mysql/db

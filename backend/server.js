@@ -15,7 +15,7 @@ app.use(express.json());
 
 //routes
 const acronymRoutes = require("./routes/acronyms")
-const leagueRoutes = require("./routes/league")
+// const leagueRoutes = require("./routes/league")
 const playerRoutes = require("./routes/players")
 const teamRoutes = require("./routes/teams")
 
@@ -24,7 +24,7 @@ const teamRoutes = require("./routes/teams")
 
 
 app.use("/acronyms", acronymRoutes)
-app.use("/league", leagueRoutes)
+// app.use("/league", leagueRoutes)
 app.use("/players", playerRoutes)
 app.use("/teams", teamRoutes)
 

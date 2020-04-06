@@ -3,101 +3,70 @@ const Router = express.Router()
 const mysqlConnection = require("../connections")
 
 
-Router.get("/", (req,res) =>{
-    console.log("Doing something")
-    mysqlConnection.query("SELECT * FROM teams;" , (err, rows, fields)=>{
-        if(err) throw err
-        res.end(JSON.stringify(rows));
-    })
-    console.log("Got out of query")
-})
-
-Router.get("/championships/:teamName", (req,res) =>{
-    let tName = req.params.teamName
+// player stats by the year
+Router.get("/titles/:teamId", (req,res) =>{
+    let tId = req.params.teamId
     mysqlConnection.query(`
-        SELECT name, season
-        FROM teams
-        LEFT OUTER JOIN
+        SELECT season, count(championId) as wonTitle 
+        FROM
+            (SELECT s.season, s.id as season_id, t.name as team_name, t.id as team_id, count(*) GameId, t.id
+            FROM teams t
+            INNER JOIN
+            games g
+            on g.homeId = t.id
+            INNER JOIN 
+            seasons s
+            on s.id = g.seasonId
+            GROUP BY  s.season, s.id, t.name, t.id) AS team_season
+        LEFT JOIN
         league l
-        on championId = teams.id
-        LEFT OUTER JOIN
-        seasons s
-        on s.id = l.seasonId
-        WHERE name = '${tName}';
-    ` , (err, rows, fields)=>{
+        ON l.championId = team_season.team_id AND l.seasonId = team_season.season_id
+        WHERE team_name like "%${tId}%"
+        GROUP BY team_season.season_id, team_season.team_id
+        ORDER BY season, team_id;`, 
+    (err, rows, fields)=>{
         if(err) throw err
         res.end(JSON.stringify(rows));
     })
 })
 
-Router.get("/about/:teamName", (req,res) =>{
-    let tName = req.params.teamName
+Router.get("/players/:teamId", (req,res) =>{
+    let tId = req.params.teamId
     mysqlConnection.query(`
-        select s.season, p.name, championships.wins as 'team_has_won' from seasons s
-        join
-        rosters r
-        on s.id = r.seasonId
-        join
-        players p
-        on p.id = r.playerId
-        join
+        SELECT p.name
+        FROM rosters r
+        INNER JOIN
         teams t
-        on t.id = r.teamId
-        left join
-        league
-        on league.championId = teamId
-        left join
-        (SELECT name, season, count(season) as 'wins'
-                FROM teams
-                LEFT OUTER JOIN
-                league l
-                on championId = teams.id
-                LEFT OUTER JOIN
-                seasons s
-                on s.id = l.seasonId
-                group by name, season) championships
-        on championships.name = t.name
-        where t.name = '${tName}'
-        order by t.id;
-    ` , (err, rows, fields)=>{
+        ON r.teamId = t.id
+        INNER JOIN
+        players p
+        ON p.id = r.playerId
+        INNER JOIN
+        (SELECT MAX(id) as current_year FROM seasons s) s
+        ON s.current_year = r.seasonId
+        WHERE t.name like '%${tId}%';`, 
+    (err, rows, fields)=>{
         if(err) throw err
         res.end(JSON.stringify(rows));
     })
 })
 
-
-Router.get("/teamCareerStats/:teamName", (req,res) =>{
-    let tName = req.params.teamName
+Router.get("/championRoster", (req,res) =>{
     mysqlConnection.query(`
-        select p.name, position, touchdowns, yards, tackles, fumbles, earnings
-        from teams
-        inner join rosters
-        on teams.id = rosters.teamId
-        inner join players p
-        on p.id = rosters.playerId
-        LEFT JOIN
-        touchdowns td
-        on p.id = td.playerId
-        LEFT JOIN
-        yards y
-        on p.id = y.playerId
-        LEFT JOIN
-        tackles t
-        on p.id = t.playerId
-        LEFT JOIN 
-        fumbles f
-        on p.id = f.playerId
-        LEFT JOIN 
-        earnings e
-        on p.id = e.playerId
-        WHERE teams.name = '${tName}';
-    ` , (err, rows, fields)=>{
+        SELECT p.name 
+        FROM league l
+        INNER JOIN teams t
+        ON t.id = l.championId
+        INNER JOIN rosters r
+        ON r.teamId = t.id
+        INNER JOIN players p
+        ON p.id = r.playerId
+        WHERE l.seasonId = 3;`, 
+    (err, rows, fields)=>{
         if(err) throw err
         res.end(JSON.stringify(rows));
     })
 })
-
-// console.log('done')
 
 
 module.exports = Router
