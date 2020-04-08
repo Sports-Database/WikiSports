@@ -8,6 +8,8 @@ ALTER USER 'wiki-sport-main'@'%' IDENTIFIED WITH MYSQL_NATIVE_PASSWORD BY 'wikis
 FLUSH PRIVILEGES;
 
 
+USE wiki_sports;
+
 DROP TABLE IF EXISTS `acronyms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
