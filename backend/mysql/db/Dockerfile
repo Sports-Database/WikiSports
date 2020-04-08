@@ -5,4 +5,5 @@ ENV MYSQL_USER=wiki-sport-main
 ENV MYSQL_PASSWORD=wikisport
 ENV MYSQL_ROOT_PASSWORD=password
 
-COPY init_db.sql /docker-entrypoint-init.d/
+COPY ./init_db.sql /docker-entrypoint-init.d/
+COPY ./create_stuff/ /docker-entrypoint-init.d/
