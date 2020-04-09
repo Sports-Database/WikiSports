@@ -33,15 +33,15 @@ class SearchBar extends React.Component {
 class Player extends React.Component {
   state = {
     name: "Player Name",
-    team: "Dallas Renegades",
+    team: "LA Lakers",
     number: 11,
-    position: "WR",
+    position: "PG",
     earnings: 10000,
     contractDetails: "These are the contract details of the player",
     stats: [
-      { season: 2018, gamesPlayed: 7, touchdowns: 2, yards: 347 },
-      { season: 2019, gamesPlayed: 12, touchdowns: 8, yards: 856 },
-      { season: 2020, gamesPlayed: 14, touchdowns: 10, yards: 1056 }
+      { season: 2018, gamesPlayed: 61, PPG: 9.6, rebounds: 2.3, assists: 2.1, fouls: 0.8, steals: 0.4, turnovers: 1.2 },
+      { season: 2018, gamesPlayed: 72, PPG: 11.7, rebounds: 4.5, assists: 3.6, fouls: 1.2, steals: 0.7, turnovers: 1.8 },
+      { season: 2020, gamesPlayed: 79, PPG: 14.4, rebounds: 6.6, assists: 4.1, fouls: 1.6, steals: 0.8, turnovers: 2.1 }
    ]
   }
 
@@ -53,13 +53,17 @@ class Player extends React.Component {
   }
   renderTable() {
     return this.state.stats.map((playerStats, index) => {
-       const { season, gamesPlayed, touchdowns, yards } = playerStats 
+       const { season, gamesPlayed, PPG, rebounds, assists, fouls, steals, turnovers } = playerStats 
        return (
           <tr key={season}>
              <td>{season}</td>
              <td>{gamesPlayed}</td>
-             <td>{touchdowns}</td>
-             <td>{yards}</td>
+             <td>{PPG}</td>
+             <td>{rebounds}</td>
+             <td>{assists}</td>
+             <td>{fouls}</td>
+             <td>{steals}</td>
+             <td>{turnovers}</td>
           </tr>
        )
     })
