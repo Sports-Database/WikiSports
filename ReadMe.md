@@ -27,7 +27,11 @@ This is a brief guide on how to use docker-compose to get a sense of the environ
 +--------------------------+
 ```
 If you do not see the "wiki_sports" database, then something went wrong. Please let me know! If it worked please proceed
+
+
 11. `use wiki_sports;`
+
+
 12. `show tables;`
 You should then see the following
 ```
