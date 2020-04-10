@@ -60,7 +60,7 @@ class Player extends React.Component {
              <td>{gamesPlayed}</td>
              <td>{PPG}</td>
              <td>{rebounds}</td>
-             <td>{assists}</td>
+             <td>{rebounds}</td>
              <td>{fouls}</td>
              <td>{steals}</td>
              <td>{turnovers}</td>
@@ -73,7 +73,7 @@ class Player extends React.Component {
     return (
       <>
         <h1>{ this.state.name }</h1>
-        <img src="https://placehold.it/150x200" alt="Player image" />
+        <img src="https://a.espncdn.com/i/teamlogos/nba/500/mil.png" alt="Player image" />
         <h2>{ this.state.team }</h2>
         <h2>#{ this.state.number } { this.state.position }</h2>
         <h3>Player Earnings: { this.state.earnings }</h3>
