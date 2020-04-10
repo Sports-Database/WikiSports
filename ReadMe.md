@@ -13,8 +13,36 @@ This is a brief guide on how to use docker-compose to get a sense of the environ
 7. In a separate terminal at the same directory of our repository, do the following:
 8. `docker exec -t -i wikisports_wiki-sports-db_1 /bin/bash` (it works if you see something like `root@1a88efef:/#`)
 9. `mysql -uroot -ppassword`  (it works if you see `mysql>`)
-10. `show databases;` You should see something like:
+10. `show databases;` You should see:
 ```
-dfdfdf
++--------------------------+
+|                          |
+| Database                 |
++--------------------------+
+| information_schema       |
+| mysql                    |
+| performance_schema       |
+| sys                      |
+| wiki_sports              |
++--------------------------+
+```
+If you do not see the "wiki_sports" database, then something went wrong. Please let me know! If it worked please proceed
+11. `use wiki_sports;`
+12. `show tables;`
+You should then see the following
+```
++-----------------------+
+| Tables_in_wiki_sports |
++-----------------------+
+| acronyms              |
+| contracts             |
+| games                 |
+| league                |
+| players               |
+| rosters               |
+| seasons               |
+| stats                 |
+| teams                 |
++-----------------------+
 
 ```
