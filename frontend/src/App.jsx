@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Nav } from './Nav';
 
-const App = () => (
-  <>
-    <SearchBar />
-    <Player />
-  </>
-  );
+class App extends Component {
+  render() {
+    return (
+      <Nav />
+    );
+  }
+}
 
 class SearchBar extends React.Component {
   state = {
