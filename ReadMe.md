@@ -63,4 +63,4 @@ If you saw what's show above, SUCCESS!!!
 
 if instead, you saw `Empty set (0.00 sec)` something went wrong and you should let me know!
 
-13. You're done! You can keep messing around with the container or you can close it with `docker-compose down`
+13. You're done! You can keep messing around with the container or you can close the session with `docker-compose down`

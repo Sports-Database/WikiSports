@@ -1,5 +1,6 @@
 //Connect to MySQL
 var mysql = require('mysql')
+
 var mysqlConnection = mysql.createConnection({
     host: "wikisports_wiki-sports-db_1",
     port: "3306",
@@ -12,7 +13,8 @@ var mysqlConnection = mysql.createConnection({
   
   //Open Connection
   mysqlConnection.connect(function(err) {
-        if (err) throw err;
+        if (err) console.log('Could not connect to wiki_sports database')
+	else     console.log('Connected to wiki_sports database!')
   });
 
   module.exports = mysqlConnection
