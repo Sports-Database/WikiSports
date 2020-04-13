@@ -15,24 +15,45 @@ services:
       - 3351:3306
     volumes:
       - wiki-sports_vol:/var/lib/mysql
-    # networks:
-    #   - backend
+    networks:
+      - backend
     healthcheck:
       test: "exit 0"
 
 
-  app:
+  wiki-sports-backend-api:
     build: ./backend
     restart: always
+    working_dir: /usr/src/app
+    volumes:
+      - ./backend:/usr/src/app
     depends_on:
-      wiki-sports-db:
-        condition: service_healthy
+      - wiki-sports-db
     ports:
-      - "8080:8080"
+      - 8080:8080
+    networks:
+      - backend
+      - frontend
+
+  frontend-app:
+    tty: true
+    build: ./frontend
+    restart: always
+    working_dir: /usr/src/app
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - wiki-sports-backend-api
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
 
 
-# networks:
-#   backend:
+networks:
+  backend:
+  frontend:
 
 volumes:
   wiki-sports_vol:
