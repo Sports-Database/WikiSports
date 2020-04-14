@@ -12,6 +12,7 @@ Router.get("/career/:playerName", (req,res) =>{
       SUM(Rebounds) AS Rebounds,
       SUM(Assists)  AS Assists,
       SUM(Steals)   AS Steals
+      
     FROM games g
     INNER JOIN stats s ON s.GameId = g.GameId
     INNER JOIN players p ON p.id = Playerid

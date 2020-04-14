@@ -15,11 +15,11 @@ Router.get('/', (req,res) => {
 })// get player ids and player names
 
 
-// /player name by search query
+// /player name by search query and also get the url
 Router.get('/:playerName', (req,res) => {
     let pName = req.params.playerName
     mysqlConnection.query(`
-        SELECT p.name 
+        SELECT p.name, p.url 
         FROM players p
         WHERE p.name LIKE '%${pName}%';` ,
         (err, rows, fields) => {
@@ -27,6 +27,8 @@ Router.get('/:playerName', (req,res) => {
             res.end(JSON.stringify(rows));
     })// query
   })// get player ids and player names
+
+
 
 
 // /players/teams/<playerName>

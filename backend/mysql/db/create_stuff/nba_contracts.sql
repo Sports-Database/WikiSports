@@ -18,7 +18,6 @@
 --
 -- Table structure for table `contracts`
 --
-USE wiki_sports;
 
 DROP TABLE IF EXISTS `contracts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
