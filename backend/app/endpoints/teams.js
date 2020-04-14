@@ -31,6 +31,22 @@ Router.get('/titles/:teamName', (req, res) => {
     res.end(JSON.stringify(rows))
   })// query
 })// get titles won by team name
+
+
+// get team information by team name
+Router.get("/:teamName", (req,res) =>{
+  let tName = req.params.teamName
+  mysqlConnection.query(`
+      SELECT * FROM
+      teams t
+      WHERE t.name like '%${tName}%';`, 
+  (err, rows, fields)=>{
+      if(err) throw err
+      res.end(JSON.stringify(rows))
+  })// query
+  })
+
+
   
 // get player names by team name
 Router.get("/players/:teamName", (req,res) =>{
