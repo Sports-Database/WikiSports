@@ -79,8 +79,29 @@ router.get('/rebounds', (req,res) => {
     })// query
   })// 
 
+  // get player with most championships for every season
+  router.get('/mostChampionships', (req,res) => {
+    mysqlConnection.query(`
+        SELECT 
+            p.name,
+            totalWins,
+            p.url
+        FROM
+            (SELECT MIN(wins.playerId) as pId, MAX(wins.championShipWins) totalWins
+            FROM 
+                (SELECT playerId , count(playerId) as championShipWins
+                FROM league
+                INNER JOIN teams t    ON t.id = league.championId
+                INNER JOIN rosters r  ON t.id = r.teamId AND r.seasonId = league.seasonId
+                GROUP BY playerId) as wins) as maxWin
+        INNER JOIN players p ON maxWin.pId = p.id;
+    `,
+      (err, rows, fields) => {
+        if(err) throw err
+        res.end(JSON.stringify(rows));
+    })// query
+  })//
 
-   // gets best steals for every season
   router.get('/steals', (req,res) => {
     mysqlConnection.query(`
     SELECT
@@ -113,28 +134,25 @@ router.get('/rebounds', (req,res) => {
     })// query
   })//
 
-  // get player with most championships for every season
-  router.get('/mostChampionships', (req,res) => {
+  // get mvp of every season
+  router.get('/mvp', (req,res) => {
     mysqlConnection.query(`
-        SELECT 
-            p.name,
-            totalWins,
-            p.url
-        FROM
-            (SELECT MIN(wins.playerId) as pId, MAX(wins.championShipWins) totalWins
-            FROM 
-                (SELECT playerId , count(playerId) as championShipWins
-                FROM league
-                INNER JOIN teams t    ON t.id = league.championId
-                INNER JOIN rosters r  ON t.id = r.teamId AND r.seasonId = league.seasonId
-                GROUP BY playerId) as wins) as maxWin
-        INNER JOIN players p ON maxWin.pId = p.id;
+      SELECT 
+        s.season,
+        p.name,
+        p.url
+      FROM league
+      INNER JOIN players p ON p.id = MVPId
+      INNER JOIN seasons s on s.id = league.seasonId;
     `,
       (err, rows, fields) => {
         if(err) throw err
         res.end(JSON.stringify(rows));
     })// query
   })//
+  
+
 
 
 module.exports = router // export
+
