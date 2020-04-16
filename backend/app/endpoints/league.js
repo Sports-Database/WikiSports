@@ -9,15 +9,16 @@ router.get('/rebounds', (req,res) => {
         SELECT 
             s.season,
             p.name,
-            rebounds
+            rebounds,
+            p.url
         FROM league
         INNER JOIN players p ON p.id = reboundLeaderId
         INNER JOIN 
             (SELECT  p.name, seasonId, SUM(Rebounds) as rebounds
             from stats s
-            inner join games g ON g.GameId = s.GameId
-            inner join players p ON p.id = s.playerId
-            group by p.name, seasonId) as allRebounds
+            INNER JOIN games g ON g.GameId = s.GameId
+            INNER JOIN players p ON p.id = s.playerId
+            GROUP BY p.name, seasonId) as allRebounds
         ON allRebounds.seasonId = league.seasonId AND allRebounds.name = p.name
         INNER JOIN seasons s ON s.id = league.seasonId;
     `,
@@ -66,11 +67,11 @@ router.get('/rebounds', (req,res) => {
     INNER JOIN 
         (SELECT  p.name, seasonId, SUM(Assists) as assists
         from stats s
-        inner join games g on g.GameId = s.GameId
-        inner join players p on p.id = s.playerId
-        group by p.name, seasonId) as allAssists
+        INNER JOIN games g ON g.GameId = s.GameId
+        INNER JOIN players p ON p.id = s.playerId
+        GROUP BY p.name, seasonId) as allAssists
     ON allAssists.seasonId = league.seasonId AND allAssists.name = p.name
-    INNER JOIN seasons s on s.id = league.seasonId;
+    INNER JOIN seasons s ON s.id = league.seasonId;
     `,
       (err, rows, fields) => {
         if(err) throw err
@@ -93,17 +94,17 @@ router.get('/rebounds', (req,res) => {
         FROM
         (SELECT seasonId sId, playerId pId, sum(steals) sSteals 
         FROM stats thisStats
-        INNER JOIN games gg on gg.GameId = thisStats.GameId
-        group by sId, pId) as stealSum
+        INNER JOIN games gg ON gg.GameId = thisStats.GameId
+        GROUP BY sId, pId) as stealSum
         INNER JOIN
         (select seasonId, max(steals) maxxSteals
         FROM
             (select seasonId, playerId, sum(steals) as steals from stats s
-            inner join games g on g.GameId = s.GameId
-            group by seasonId, playerId) as mostSteals
-        group by seasonId) as maxSteals
+            INNER JOIN games g ON g.GameId = s.GameId
+            GROUP BY seasonId, playerId) as mostSteals
+        GROUP BY seasonId) as maxSteals
         ON maxSteals.maxxSteals = sSteals
-        group by seasonId, maxxSteals) as steals
+        GROUP BY seasonId, maxxSteals) as steals
     ON steals.pId = p.id
     INNER JOIN seasons se
     ON se.id = seasonId;
@@ -112,16 +113,6 @@ router.get('/rebounds', (req,res) => {
         if(err) throw err
         res.end(JSON.stringify(rows));
     })// query
-  })// 
-
-
-
-  
-  
-
-
-
-
-
+  })//
 
 module.exports = router // export
