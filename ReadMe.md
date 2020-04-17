@@ -22,4 +22,8 @@ This is a brief guide on how to use docker-compose to get a sense of the environ
 
 8. If it has gone up properly, you should see:
 
-![alt text](https://github.com/Sports-Database/WikiSports/blob/master/Docker_Tut/success.PNG "built, but DB not ready")
+![alt text](https://github.com/Sports-Database/WikiSports/blob/master/Docker_Tut/Success.PNG "built, but DB not ready")
+
+9. If you're at this point, the application works! Open a browser window. Type the following in the URL: `http://localhost:3000/. You should now see our application. Have fun!
+
+10. Once you are done. Make sure to go back to one of the terminals and do the following: `docker-compose down`. This is important!
