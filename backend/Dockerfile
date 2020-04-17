@@ -1,10 +1,10 @@
-FROM node:9-slim
+FROM node:12 as build-deps
 
 # WORKDIR specifies the application directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copying package.json file to the app directory
-COPY package.json /app
+COPY package.json /usr/src/app
 
 # Installing npm for DOCKER
 RUN npm install
@@ -16,7 +16,9 @@ RUN npm install mysql
 RUN npm install nodemon
 
 # Copying rest of the application to app directory
-COPY . /app
+COPY . /usr/src/app
+
+EXPOSE 8080
 
 # Starting the application using npm start
 CMD [ "npm", "start" ]

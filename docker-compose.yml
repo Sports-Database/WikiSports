@@ -27,6 +27,7 @@ services:
     working_dir: /usr/src/app
     volumes:
       - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - wiki-sports-db
     ports:
