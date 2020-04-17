@@ -5,7 +5,7 @@ This is a brief guide on how to use docker-compose to get a sense of the environ
 # Steps
 1. First off, make sure you have docker installed! There shouldn't be an issue with MacOS or Linux, however there could be some issue with the paravirtualization method used in windows. Make sure hyper-v and containers are turned on!
 
-2. You probably already have our repository cloned onto your local machine, however the dockerization has been done on the master branch. All you have to do is open a terminal inside of the cloned repository and enter the following command: `git checkout master`...You should now be in my branch, and the files/directories should have changed to reflect this. You should now see a file called "docker-compose.yml"
+2. You probably already have our repository cloned onto your local machine, however the dockerization has been done on the master branch. All you have to do is open a terminal inside of the cloned repository and enter the following command: `git checkout master`...You should now be in master branch, and the files/directories should have changed to reflect this. You should now see a file called "docker-compose.yml"
 
 3. Make sure you have the most recent commit and do the following : `git pull`
 
