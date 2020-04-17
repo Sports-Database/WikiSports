@@ -1,13 +1,10 @@
 import React from 'react'
 
-const Unknown = (props) => {  
-  return(
-    <>
-      <br/>
-      <h3>No results for "{props.searchQuery}"</h3>
-      <h3>Did you mean...</h3>
-    </>
-  )
-}
+const Unknown = (props) => 
+  <>
+    <br/>
+    <h3>No results for "{props.parentState.searchQuery}"</h3><br/>
+    <h4>Did you mean "{props.parentState.didYouMean}"?</h4>
+  </>
 
 export default Unknown

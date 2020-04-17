@@ -3,7 +3,7 @@ const Router = express.Router()
 const mysqlConnection = require("../connections")
 
 
-
+//
 //------------------ /players -----------------------
 Router.get('/', (req,res) => {
   mysqlConnection.query(`

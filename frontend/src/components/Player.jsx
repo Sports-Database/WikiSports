@@ -36,12 +36,16 @@ const Player = (props) => {
     })
   }
 
+  //<Image src={props.playerData.url} alt='Player'/>
+  //https://nba-players.herokuapp.com/players/james/lebron
+  //<Image src={'http://nba-players.herokuapp.com/players/' + props.playerData.firstName.toLowerCase() + '/' + props.playerData.lastName.toLowerCase()}/>
+
   const numberWithCommas = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   
   return (
     <>
       <h3>{props.playerData.name}</h3>
-      <img src='https://placehold.it/150x150' alt='Player'/>
+      <img src={'https://' + props.playerData.url} height='250' alt='Player'/>
       <h5>Current Team: {props.playerData.team}</h5><br/>
       <h4>Career Stats</h4>
       <Table id='career' className='table-bordered'>

@@ -2,7 +2,6 @@ import React from 'react'
 import Table from 'react-bootstrap/Table'
 
 const Champions = (props) => {  
-
   const renderTable = () => {
     let rows = []
     props.championData.playerNames.map((name, index) => rows.push(<tr key={index}><td>{name}</td></tr>))

@@ -14,8 +14,13 @@ const Team = (props) => {
   return (
     <>
       <h3>{props.teamData.teamName}</h3>
-      <img src='https://a.espncdn.com/i/teamlogos/nba/500/bos.png' alt='Player'/>
+      <img src={'https://' + props.teamData.url} height='250' alt='Team'/>
       <h5>Championships: {displayChampionships()}</h5><br/>
+      <h6>Useful Links:</h6>
+      <ol>
+        <li><a href={'https://' + props.teamData.articles[0]['url']}>{props.teamData.articles[0]['url']}</a></li>
+        <li><a href={'https://' + props.teamData.articles[0]['url']}>{props.teamData.articles[1]['url']}</a></li>
+      </ol>
       <Table id='stats'>
         <thead className='thead-dark'><tr><th>Current Roster</th></tr></thead>
         <tbody>{renderTable()}</tbody>
