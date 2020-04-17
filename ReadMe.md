@@ -16,53 +16,10 @@ This is a brief guide on how to use docker-compose to get a sense of the environ
 
 ![alt text](https://github.com/Sports-Database/WikiSports/blob/master/Docker_Tut/first_build.PNG "built, but DB not ready")
 
-6. If you know how to use postman and know my routes/endpoints you may go ahead and test to see how those work. However, if you have no idea about any of the former, you can still check the mysql database to make sure that the database is up with our data. To do that, you can proceed to the next steps.
+6. When you get to this point, you will have to bring down the application from docker. Open a seperate terminal within the directory and do the following : `docker-compose down`. This brings down the image. You should see three instances of the containers being brought down with the word "done" next to them.
 
-7. In a separate terminal at the same directory of our repository, do the following:
+7. After the containers have been brought down, put them back up, except this time, you don't have to build. Go back to to the other terminal and do: `docker-compose up`. Wait at least 30 seconds to go up.
 
-8. `docker exec -t -i wikisports_wiki-sports-db_1 /bin/bash` (it works if you see something like `root@1a88efef:/#`)
+8. If it has gone up properly, you should see:
 
-9. `mysql -uroot -ppassword`  (it works if you see `mysql>`)
-
-10. `show databases;` You should see:
-```
-+--------------------------+
-|                          |
-| Database                 |
-+--------------------------+
-| information_schema       |
-| mysql                    |
-| performance_schema       |
-| sys                      |
-| wiki_sports              |
-+--------------------------+
-```
-If you do not see the "wiki_sports" database, then something went wrong. Please let me know! If it worked please proceed
-
-
-11. `use wiki_sports;`
-
-
-12. `show tables;`
-You should then see the following
-```
-+-----------------------+
-| Tables_in_wiki_sports |
-+-----------------------+
-| acronyms              |
-| contracts             |
-| games                 |
-| league                |
-| players               |
-| rosters               |
-| seasons               |
-| stats                 |
-| teams                 |
-+-----------------------+
-
-```
-If you saw what's show above, SUCCESS!!!
-
-if instead, you saw `Empty set (0.00 sec)` something went wrong and you should let me know!
-
-13. You're done! You can keep messing around with the container or you can close the session with `docker-compose down`
+![alt text](https://github.com/Sports-Database/WikiSports/blob/master/Docker_Tut/success.PNG "built, but DB not ready")
