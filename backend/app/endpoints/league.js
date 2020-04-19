@@ -150,6 +150,31 @@ router.get('/rebounds', (req,res) => {
         res.end(JSON.stringify(rows));
     })// query
   })//
+
+  router.get('/smallestFanbase', (req,res) => {
+    mysqlConnection.query(`
+      SELECT name, url, fanbase FROM teams t
+      WHERE t.fanbase in ((SELECT min(fanbase) FROM teams))
+      LIMIT 1;
+    `,
+      (err, rows, fields) => {
+        if(err) throw err
+        res.end(JSON.stringify(rows));
+    })// query
+  })//
+
+  router.get('/largestFanbase', (req,res) => {
+    mysqlConnection.query(`
+      SELECT name, url, fanbase FROM teams t
+      WHERE t.fanbase in ((SELECT max(fanbase) FROM teams))
+      LIMIT 1;
+    `,
+      (err, rows, fields) => {
+        if(err) throw err
+        res.end(JSON.stringify(rows));
+    })// query
+  })//
+  
   
 
 
