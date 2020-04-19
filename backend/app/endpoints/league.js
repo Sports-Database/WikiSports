@@ -151,6 +151,7 @@ router.get('/rebounds', (req,res) => {
     })// query
   })//
 
+  // get smalles fanbst
   router.get('/smallestFanbase', (req,res) => {
     mysqlConnection.query(`
       SELECT name, url, fanbase FROM teams t
@@ -163,6 +164,7 @@ router.get('/rebounds', (req,res) => {
     })// query
   })//
 
+  // getlargest fanbase
   router.get('/largestFanbase', (req,res) => {
     mysqlConnection.query(`
       SELECT name, url, fanbase FROM teams t
