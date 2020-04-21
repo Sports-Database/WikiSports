@@ -67,7 +67,7 @@ export class Search extends React.Component {
   
   componentDidMount() {this.initPlayers()}
 
-  home   = 'http://localhost:3000'
+  home   = 'http://localhost:80'
   apiUrl = 'http://localhost:8080'
 
   renderTeams = () => {
