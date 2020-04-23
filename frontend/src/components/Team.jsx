@@ -9,13 +9,16 @@ const Team = (props) => {
     props.teamData.roster.map((name, index) => rows.push(<tr key={index}><td>{name}</td></tr>))
     return <>{rows}</>
   }
+  const numberWithCommas = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  
 
   // that img link is a celtics img link
   return (
     <>
       <h3>{props.teamData.teamName}</h3>
       <img src={'https://' + props.teamData.url} height='250' alt='Team'/>
-      <h5>Championships: {displayChampionships()}</h5><br/>
+      <h5>Championships: {displayChampionships()}</h5>
+      <h5>Fanbase: {numberWithCommas(props.teamData.fanbase)}</h5><br/>
       <h6>Useful Links:</h6>
       <ol>
         <li><a href={'https://' + props.teamData.articles[0]['url']}>{props.teamData.articles[0]['url']}</a></li>

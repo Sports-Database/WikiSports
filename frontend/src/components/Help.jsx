@@ -1,7 +1,7 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 
-const Help = (props) => {  
+const Help = props => {  
 
   return(
     <>
@@ -12,10 +12,10 @@ const Help = (props) => {
       <tbody>
         <tr><td>Teams</td><td>List of teams in the NBA</td></tr>  
         <tr><td>Players</td><td>List of players in the NBA</td></tr>  
-        <tr><td>League</td><td>League career leaders in stats</td></tr>  
         <tr><td>Stats</td><td>What each of the statistic abbreviation stands for</td></tr>  
         <tr><td>Champions</td><td>List of players on last year's championship winning team</td></tr>   
         <tr><td>MVP</td><td>Most valuable players by season</td></tr>
+        <tr><td>Fan</td><td>To see each team's fanbse</td></tr>
         <tr><td>Points</td><td>Seasonal leaders in points</td></tr> 
         <tr><td>Rebounds</td><td>Seasonal leaders in rebounds</td></tr>  
         <tr><td>Assists</td><td>Seasonal leaders in assists</td></tr> 

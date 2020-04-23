@@ -1,7 +1,7 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 
-const Acronyms = (props) => {  
+const Acronyms = props => {  
 
   const renderTable = () => {
     return props.acronyms.map((key, index) => {
