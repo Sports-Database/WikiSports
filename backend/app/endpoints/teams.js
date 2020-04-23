@@ -35,6 +35,7 @@ Router.get('/titles/:teamName', (req, res) => {
 
 // get team information by team name
 Router.get("/:teamName", (req,res) =>{
+  console.log('in this one ')
   let tName = req.params.teamName
   mysqlConnection.query(`
       SELECT * FROM
@@ -64,13 +65,10 @@ mysqlConnection.query(`
 })// get player names by team name
 
 // get most recent champions from 2019
-Router.get("/championRoster", (req,res) =>{
-mysqlConnection.query(`
-    SELECT p.name as playerName, t.name as teamName FROM league l
-    INNER JOIN teams t ON t.id = l.championId
-    INNER JOIN rosters r ON r.teamId = t.id
-    INNER JOIN players p ON p.id = r.playerId
-    WHERE l.seasonId = 3;`, 
+Router.get("/champs/championRoster", (req,res) =>{
+  console.log('hello')
+  mysqlConnection.query(`
+    SELECT * FROM teams;`, 
 (err, rows, fields)=>{
     if(err) throw err
     res.end(JSON.stringify(rows))
