@@ -82,19 +82,17 @@ router.get('/rebounds', (req,res) => {
   // get player with most championships for every season
   router.get('/mostChampionships', (req,res) => {
     mysqlConnection.query(`
-        SELECT 
-            p.name,
+         SELECT     p.name,
             totalWins,
             p.url
-        FROM
-            (SELECT MIN(wins.playerId) as pId, MAX(wins.championShipWins) totalWins
-            FROM 
-                (SELECT playerId , count(playerId) as championShipWins
-                FROM league
-                INNER JOIN teams t    ON t.id = league.championId
-                INNER JOIN rosters r  ON t.id = r.teamId AND r.seasonId = league.seasonId
-                GROUP BY playerId) as wins) as maxWin
-        INNER JOIN players p ON maxWin.pId = p.id;
+	 FROM		
+            (SELECT playerId , count(playerId) as totalWins
+	        FROM league
+	        INNER JOIN teams t    ON t.id = league.championId
+	        INNER JOIN rosters r  ON t.id = r.teamId AND r.seasonId = league.seasonId
+	        GROUP BY playerId
+	        ORDER BY totalWins DESC
+	        LIMIT 5) as wins INNER JOIN players p on p.id = wins.playerId;
     `,
       (err, rows, fields) => {
         if(err) throw err
