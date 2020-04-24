@@ -20,8 +20,43 @@ import Steals    from '../components/Steals'
 import Season   from '../components/Season'
 import MostChampionships from '../components/MostChampionships'
 
-const HOMEURL = 'http://localhost:80'
+const HOMEURL = 'http://localhost:3000'
 const APIURL  = 'http://localhost:8080'
+
+function capitalizeProperly(word, index){        
+  let arr = word.split('')                                                      
+  if(index <= 2){
+    for(let i = 0; i < arr.length; ++i){    
+      if(i == 0){
+        arr[0] = arr[0].toUpperCase()
+      }
+      if(arr[i-1]){
+        switch(arr[i-1]){
+          case '-':
+            arr[i] = arr[i].toUpperCase()
+            break
+          case '.':
+            arr[i] = arr[i].toUpperCase()
+            break
+          default:
+            break
+        }
+      }
+    }
+  }
+  else{
+    arr.forEach(element =>{
+      if(element == 'J')
+        element = element.toUpperCase()
+      if(element == 'i')
+        element = element.toUpperCase()
+    })
+  }
+    
+  console.log('name', arr)
+  return arr.join('')
+}
+
 
 export class Search extends React.Component {  
   state = {
@@ -83,6 +118,8 @@ export class Search extends React.Component {
       .then(res => res.data.forEach(player => pNames.push(player.name)))
       this.setState({playerNames: pNames})
     }
+    
+    
   }// init teams and players
 
   capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
@@ -109,14 +146,19 @@ export class Search extends React.Component {
     else if(Object.keys(basicType).indexOf(query)!==-1) {this.setState({queryType: basicType[query]})}
     else { 
       let formatted = []
-      query.toLowerCase().split(' ').forEach(word => formatted.push(this.capitalize(word)))
+      query.toLowerCase().split(' ').forEach((word,index) => formatted.push(capitalizeProperly(word,index)))
       formatted = formatted.join(' ')
+      console.log(formatted, ' should be fucking found')
+      console.log(this.state)
       if(this.state.playerNames.indexOf(formatted)!==-1) this.setState({queryType: '<playerName>'})
       else isNotPlayerName = true
       if(this.state.teamNames.indexOf(formatted)!==-1)   this.setState({queryType: '<teamName>'  })
       else isNotTeamName = true
     }
-    if(isNotPlayerName && isNotTeamName) this.goToUnknown()
+    if(isNotPlayerName && isNotTeamName){
+      console.log(this.state.searchQuery)
+      this.goToUnknown()
+    }
   }
 
   async prepData() {
@@ -179,6 +221,7 @@ export class Search extends React.Component {
       let nameArr       = receivedData.name.split(' ')
       updated.firstName = nameArr[1]
       updated.lastName  = nameArr[0]
+      console.log(updated.firstName, updated.lastName)
       updated.url       = receivedData.url
     })
 
