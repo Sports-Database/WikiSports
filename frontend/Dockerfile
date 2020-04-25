@@ -1,4 +1,4 @@
-FROM node:12 as build-deps
+FROM node:latest as build-deps
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app
 RUN npm install
