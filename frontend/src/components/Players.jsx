@@ -1,7 +1,7 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 
-const Players = (props) =>
+const Players = props =>
   <Table id='stats' className='table-striped'>
     <thead className='thead-dark'><tr><th>Players</th></tr></thead>
     <tbody>{props.players.map((name, index) => 

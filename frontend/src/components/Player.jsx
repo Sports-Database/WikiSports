@@ -1,7 +1,7 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 
-const Player = (props) => {  
+const Player = props => {  
 
   const statistics = ['Points', 'Rebounds', 'Assists', 'Steals', 'Earnings']
 
@@ -14,20 +14,20 @@ const Player = (props) => {
     statistics.map((stat, index) => {
         if(stat==='Earnings') return <td key={index}>{'$' + numberWithCommas(props.playerData[stat.toLowerCase()])}</td>
         else return <td key={index}>{numberWithCommas(props.playerData[stat.toLowerCase()])}</td>
-      })
+    })
 
   const numberWithCommas = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   
   return (
     <>
-      <h3>{props.playerData.name}</h3>
-      <img src={'https://' + props.playerData.url} height='250' alt='Player'/>
-      <h5>Current Team: {props.playerData.team}</h5><br/>
-      <h4>Career Stats</h4>
-      <Table id='career' className='table-bordered'>
-        <thead className='thead-dark'><tr>{renderCareerTableHeader()}</tr></thead>
-        <tbody><tr>{renderCareerTable()}</tr></tbody>
-      </Table>
+    <h3>{props.playerData.name}</h3>
+    <img src={'https://' + props.playerData.url} height='250' alt='Player'/>
+    <h5>Current Team: {props.playerData.team}</h5><br/>
+    <h4>Career Stats</h4>
+    <Table id='career' className='table-bordered'>
+      <thead className='thead-dark'><tr>{renderCareerTableHeader()}</tr></thead>
+      <tbody><tr>{renderCareerTable()}</tr></tbody>
+    </Table>
     </>
   )
 }

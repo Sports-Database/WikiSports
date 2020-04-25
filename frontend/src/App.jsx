@@ -1,5 +1,5 @@
 import React from 'react'
-import { Search } from './pages'
+import { Search } from './pages/Search'
 
 const App = () => <Search/>
 

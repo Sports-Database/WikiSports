@@ -1,19 +1,14 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 
-const Team = (props) => {
-  const displayChampionships = () => props.teamData.championships.length ? displayYears() : 'None'
-  const displayYears = () => props.teamData.championships[0]
-  const renderTable = () => {
-    let rows = []
-    props.teamData.roster.map((name, index) => rows.push(<tr key={index}><td>{name}</td></tr>))
-    return <>{rows}</>
-  }
-  const numberWithCommas = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  
+const Team = props => {
+  const displayChampionships = () => 
+    props.teamData.championships.length ? props.teamData.championships[0] : 'None'
 
+  const numberWithCommas = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  
   // that img link is a celtics img link
-  return (
+  return (props.teamData.fanbase===undefined? <></> :
     <>
       <h3>{props.teamData.teamName}</h3>
       <img src={'https://' + props.teamData.url} height='250' alt='Team'/>
@@ -25,13 +20,11 @@ const Team = (props) => {
         <li><a href={'https://' + props.teamData.articles[0]['url']}>{props.teamData.articles[1]['url']}</a></li>
       </ol>
       <Table id='stats'>
-        <thead className='thead-dark'><tr><th>Current Roster</th></tr></thead>
-        <tbody>{renderTable()}</tbody>
+        <thead className='thead-dark'><tr><th>Team Roster</th></tr></thead>
+        <tbody>{props.teamData.roster.map((name, index) => <tr key={index}><td>{name}</td></tr>)}</tbody>
       </Table>
     </>
   )
 }
 
 export default Team
-
-// <img src='https://placehold.it/150x150' alt='Player'/>

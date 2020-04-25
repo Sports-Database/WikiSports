@@ -1,7 +1,8 @@
 import React from 'react'
 import axios from 'axios'
-import { Container, Button, Form, Dropdown} from 'react-bootstrap/'
+import { Container, Button, Form, Dropdown } from 'react-bootstrap/'
 
+import Logo      from '../assets/logo.png'
 import Acronyms  from '../components/Acronyms'
 import Champions from '../components/Champions'
 import Help      from '../components/Help'
@@ -22,41 +23,6 @@ import MostChampionships from '../components/MostChampionships'
 
 const HOMEURL = 'http://localhost:3000'
 const APIURL  = 'http://localhost:8080'
-
-function capitalizeProperly(word, index){        
-  let arr = word.split('')                                                      
-  if(index <= 2){
-    for(let i = 0; i < arr.length; ++i){    
-      if(i == 0){
-        arr[0] = arr[0].toUpperCase()
-      }
-      if(arr[i-1]){
-        switch(arr[i-1]){
-          case '-':
-            arr[i] = arr[i].toUpperCase()
-            break
-          case '.':
-            arr[i] = arr[i].toUpperCase()
-            break
-          default:
-            break
-        }
-      }
-    }
-  }
-  else{
-    arr.forEach(element =>{
-      if(element == 'J')
-        element = element.toUpperCase()
-      if(element == 'i')
-        element = element.toUpperCase()
-    })
-  }
-    
-  console.log('name', arr)
-  return arr.join('')
-}
-
 
 export class Search extends React.Component {  
   state = {
@@ -103,62 +69,55 @@ export class Search extends React.Component {
     didYouMean: ''
   }
   
-  componentDidMount() {this.initPlayers()}
-
-  renderTeams = () => {
-    let teams = []
-    this.state.teamNames.sort().map((tName, index) => teams.push(<Button onClick={()=>this.goToTeam(tName)} className='btn dropdown-item' key={index}>{tName}</Button>))
-    return <div className='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>{teams}</div>
-  } // for nav bar
-
-  initPlayers() {
-    if(!this.state.playerNames.length) {
+  componentDidMount() {
+    if(!this.state.playerNames.length) {  // get list of players
       let pNames = []
       axios.get(APIURL + '/players')
       .then(res => res.data.forEach(player => pNames.push(player.name)))
       this.setState({playerNames: pNames})
     }
-    
-    
-  }// init teams and players
+  }
 
-  capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+  capitalize = str => str.charAt(0).toUpperCase() + str.slice(1)
 
   async initQueryType() {
     let basicType = {
       'teams'    : 'teams'    , 'team'    : 'teams'    ,   
       'players'  : 'players'  , 'player'  : 'players'  ,
-      'acronyms' : 'acronyms' , 'acronym' : 'acronyms' , 'acro' : 'acronyms'  , 'stat' : 'acronyms' , 'stats' : 'acronyms' , 'statistics' : 'acronyms' , 'statistic' : 'acronyms' , 
+      'acronyms' : 'acronyms' , 'acronym' : 'acronyms' , 'acro'  : 'acronyms'  , 'stat' : 'acronyms' , 'stats' : 'acronyms' , 'statistics' : 'acronyms' , 'statistic' : 'acronyms' , 
       'champions': 'champions', 'champion': 'champions', 'champs': 'champions', 'champ': 'champions',
-      'help'     : 'help'     , 'h'       : 'help'     ,
+      'help'     : 'help'     , 'h'       : 'help'     , 'etc'   : 'help',
       'fanbase'  : 'fanbase'  , 'fan'     : 'fanbase'  , 'fans'  : 'fanbase', 'popularity' : 'fanbase',
       'mvp'      : 'mvp'      , 'mvps'    : 'mvp'      , 'most valuable player':'mvp' , 'most valuable players':'mvp',
-      'ppg'      : 'ppg'      , 'points'  : 'ppg'      , 'scoring leader' : 'ppg'     , 'points per game': 'ppg', 
-      'assists'  : 'assists'  , 'assist'  : 'assists'  , 'assists leader' : 'assists' , 'passing leader' : 'assists',
-      'rebounds' : 'rebounds' , 'rebound' : 'rebounds' , 'rebounds leader': 'rebounds', 'boards' : 'rebounds',
-      'steals'   : 'steals'   , 'steal'   : 'steals'   , 'steals leader'  : 'steals',
+      'ppg'      : 'ppg'      , 'points'  : 'ppg'      , 'scoring leader' : 'ppg'     , 'scoring leaders' : 'ppg', 'points per game': 'ppg', 
+      'assists'  : 'assists'  , 'assist'  : 'assists'  , 'assists leader' : 'assists' , 'passing leader' : 'assists', 'assists leaders' : 'assists',
+      'rebounds' : 'rebounds' , 'rebound' : 'rebounds' , 'rebounds leader': 'rebounds', 'boards' : 'rebounds', 'rebounds leaders': 'rebounds',
+      'steals'   : 'steals'   , 'steal'   : 'steals'   , 'steals leader'  : 'steals'  , 'steals leaders'  : 'steals',
       'most championships' : 'most championships', 'championships': 'most championships', 'most championship' : 'most championships', 'rings' : 'most championships'
     }
-    let query           = this.state.searchQuery.toLowerCase()
-    let isNotPlayerName = false
-    let isNotTeamName   = false
-    if(!this.state.searchQuery.length)                  this.setState({queryType: 'blank'})
-    else if(Object.keys(basicType).indexOf(query)!==-1) {this.setState({queryType: basicType[query]})}
+    let query                = this.state.searchQuery.toLowerCase()
+    let isNotPlayerName      = false
+    let isNotTeamName        = false
+    let lowerCasePlayerNames = this.state.playerNames.map(name=>name.toLowerCase())
+    let lowerCaseTeamNames   = this.state.teamNames.map(name=>name.toLowerCase())
+    
+    // query is blank
+    if(!this.state.searchQuery.length) this.setState({queryType: 'blank'})
+    
+    // query is basic type
+    else if(Object.keys(basicType).indexOf(query)!==-1) // if query is a key in basic type
+      this.setState({queryType: basicType[query]})
+    
+    // query is either player name or team name
     else { 
-      let formatted = []
-      query.toLowerCase().split(' ').forEach((word,index) => formatted.push(capitalizeProperly(word,index)))
-      formatted = formatted.join(' ')
-      console.log(formatted, ' should be fucking found')
-      console.log(this.state)
-      if(this.state.playerNames.indexOf(formatted)!==-1) this.setState({queryType: '<playerName>'})
-      else isNotPlayerName = true
-      if(this.state.teamNames.indexOf(formatted)!==-1)   this.setState({queryType: '<teamName>'  })
-      else isNotTeamName = true
+      lowerCasePlayerNames.indexOf(query)!==-1?
+        this.setState({queryType:'<playerName>'}) : isNotPlayerName = true
+      lowerCaseTeamNames.indexOf(query)!==-1?
+        this.setState({queryType:'<teamName>'}) : isNotTeamName = true      
     }
-    if(isNotPlayerName && isNotTeamName){
-      console.log(this.state.searchQuery)
-      this.goToUnknown()
-    }
+
+    // query is unknown
+    if(isNotPlayerName && isNotTeamName) this.goToUnknown()
   }
 
   async prepData() {
@@ -169,39 +128,27 @@ export class Search extends React.Component {
 
   updateRelevantData = () => {
     switch(this.state.queryType) {
-      case 'champions':
-        this.updateChampions()
-        break
-      case '<playerName>':
-        this.updatePlayerData()
-        break
-      case '<teamName>':
-        this.updateTeamData()
-        break
-      case 'acronyms':
-        this.updateAcronyms()
-        break
-      case 'mvp':
-        this.updateMVPs()
-        break
-      case 'fanbase':
-        this.updateFanbaseData()
-        break
-      case 'ppg':
-        this.updatePPGData()
-        break
-      case 'steals':
-        this.updateStealsData()
-        break
-      case 'assists':
-        this.updateAssistsData()
-        break
-      case 'rebounds':
-        this.updateReboundsData()
-        break
-      case 'most championships':
-        this.updateMostChampionshipsData()
-        break
+      case 'champions':     this.updateChampions()
+                            break
+      case '<playerName>':  this.updatePlayerData()
+                            break
+      case '<teamName>':    this.updateTeamData()
+                            break
+      case 'acronyms':      this.updateAcronyms()
+                            break
+      case 'mvp':           this.updateMVPs()
+                            break
+      case 'fanbase':       this.updateFanbaseData()
+                            break
+      case 'ppg':           this.updatePPGData()
+                            break
+      case 'steals':        this.updateStealsData()
+                            break
+      case 'assists':       this.updateAssistsData()
+                            break
+      case 'rebounds':      this.updateReboundsData()
+                            break
+      case 'most championships': this.updateMostChampionshipsData()
       default:
     }
   }
@@ -221,7 +168,6 @@ export class Search extends React.Component {
       let nameArr       = receivedData.name.split(' ')
       updated.firstName = nameArr[1]
       updated.lastName  = nameArr[0]
-      console.log(updated.firstName, updated.lastName)
       updated.url       = receivedData.url
     })
 
@@ -243,7 +189,6 @@ export class Search extends React.Component {
     await axios.get(APIURL + '/stats/earnings/' + this.state.searchQuery)
     .then(res => updated.earnings = res.data[0].salaryPerYear)
     
-    // THIS WAS WHERE THE ERROR WAS
     this.setState({playerData:updated})
   }
 
@@ -291,8 +236,6 @@ export class Search extends React.Component {
 
     await axios.get(APIURL + '/teams/champs/championRoster')
     .then(res => {
-      console.log(res)
-
       res.data.forEach(data => players.push(data.playerName))
       updated.teamName = res.data[0].teamName})
     .then(updated.playerNames = players)
@@ -426,6 +369,7 @@ export class Search extends React.Component {
   }
 
   async goToUnknown() {
+    // suggest spelling check
     let hash = (s) => s.toLowerCase().split('').reduce(function(a,b){a=((a<<1)-a)+b.charCodeAt(0);return a},0)
     let possibles = []
     let keywords  = ['team', 'teams', 'player', 'players', 'nba', 'acronyms', 'acronym', 'stat', 'stats', 'statistics', 'champion', 'champions', 'help', 'mvp', 'mvps']
@@ -452,11 +396,10 @@ export class Search extends React.Component {
     this.setState({queryType:'unknown'})
   }
 
-  render() {
-    return(
+  render = () =>
     <>
       <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
-        <a className='navbar-brand' href={HOMEURL}>WikiSports</a>
+        <a className='navbar-brand' href={HOMEURL}><img style={{width:'90px'}} src={Logo}/></a>
         <button className='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation'>
           <span className='navbar-toggler-icon'></span>
         </button>
@@ -464,13 +407,16 @@ export class Search extends React.Component {
           <ul className='navbar-nav'>
             <li className='nav-item dropdown'>
               <Dropdown className='nav-link dropdown-toggle' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                  Teams
+                Teams
               </Dropdown>
-              {this.renderTeams()}
+              <div className='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>{
+                this.state.teamNames.sort().map((tName, i) =>
+                  <Button onClick={()=>this.goToTeam(tName)} className='btn dropdown-item' key={i}>{tName}</Button>)
+              }</div>
             </li>
             <li className='nav-item dropdown'>
               <Dropdown className='nav-link dropdown-toggle' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                  League Leaders
+                League Leaders
               </Dropdown>
               <div className='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
                 <Button className='dropdown-item' onClick={()=>this.goToMVP()}>MVP</Button>
@@ -485,7 +431,7 @@ export class Search extends React.Component {
           </ul>
               <Form.Control
                 type = 'text'
-                placeholder = 'Enter Player Name'
+                placeholder = 'Enter player name, teams, help, etc...'
                 style = {{width: '80%', float: 'left', marginLeft:'.5em'}}
                 onClick = {() => this.setState({queryType:'blank'})}
                 onChange = {e => this.setState({searchQuery:e.target.value})}
@@ -514,5 +460,4 @@ export class Search extends React.Component {
         {this.state.ready && this.state.queryType==='help'         && <Help                                               style={{display:'none'}}/>}
       </Container>
     </>
-  )}
 }
