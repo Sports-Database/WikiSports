@@ -1,14 +1,6 @@
-import React      from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Home     from './components/Home'
-import { ROUTES } from './routes'
+import React from 'react'
+import { Search } from './pages/Search'
 
-const App = () => 
-  <Router>
-    <Home/>
-    <Switch>
-      { ROUTES.map((route,i) => <Route exact key={i} {...route}/>) }
-    </Switch>
-  </Router>  
+const App = () => <Search/>
 
 export default App

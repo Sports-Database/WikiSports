@@ -1,30 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Table, Container } from 'react-bootstrap'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import Table from 'react-bootstrap/Table'
 
-const Teams = () => {
-
-  const [ teams, setTeams ] = useState()
-
-  const APIURL  = 'http://localhost:8080'
-
-  useEffect(()=>initTeams(),[])
-
-  const initTeams = () => {
-    axios
-      .get(APIURL + '/teams')
-      .then(res => setTeams(res.data))
-  }
-
-  return(
-  teams===undefined? <></> :
-  <Container>
-    <Table className='table-striped'>
-      <thead className='thead-dark'><tr><th>Teams</th></tr></thead>
-      <tbody>{teams.map((obj, i) => <tr key={i}><td><Link to={`teams/${obj.id}`}>{obj.name}</Link></td></tr>)}</tbody>
-    </Table>
-  </Container>)
-}
+const Teams = props =>
+  <Table className='table-striped'>
+    <thead className='thead-dark'><tr><th>Teams</th></tr></thead>
+    <tbody>{props.teams.map((name, index) => <tr key={index}><td>{name}</td></tr>)}</tbody>
+  </Table>
 
 export default Teams
