@@ -54,27 +54,6 @@ UNLOCK TABLES;
 
 
 
-DROP TABLE IF EXISTS `teams`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `teams` (
-  `id` int NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `teams`
---
-
-LOCK TABLES `teams` WRITE;
-/*!40000 ALTER TABLE `teams` DISABLE KEYS */;
-INSERT INTO `teams` VALUES (1,'Portland Trail Blazers'),(2,'Los Angeles Lakers'),(3,'Golden State Warriors'),(4,'Dallas Mavericks'),(5,'Houston Rockets'),(6,'Brooklyn Nets'),(7,'New York Knicks'),(8,'Utah Jazz'),(9,'Memphis Grizzlies'),(10,'Denver Nuggets'),(11,'Sacramento Kings'),(12,'New Orleans Pelicans'),(13,'Los Angeles Clippers'),(14,'Minnesota Timberwolves'),(15,'Boston Celtics'),(16,'Chicago Bulls'),(17,'Toronto Raptors'),(18,'Miami Heat'),(19,'Milwaukee Bucks'),(20,'Detroit Pistons'),(21,'Philadelphia 76ers'),(22,'Atlanta Hawks'),(23,'Washington Wizards'),(24,'Charlotte Bobcats'),(25,'Indiana Pacers'),(26,'Cleveland Cavaliers'),(27,'Orlando Magic'),(28,'San Antonio Spurs'),(29,'Phoenix Suns'),(30,'Oklahoma City Thunder');
-/*!40000 ALTER TABLE `teams` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
 
 
 DROP TABLE IF EXISTS `seasons`;

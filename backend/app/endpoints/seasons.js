@@ -1,7 +1,8 @@
-const express = require("express")
-const Router = express.Router()
-const mysqlConnection = require("../connections")
+// import
+const sql     = require('../connections') // connected db
+const express = require('express')
+const router  = express.Router() // express route handler
 
 
 
-module.exports = Router // export
+module.exports = router
