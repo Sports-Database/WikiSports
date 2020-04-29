@@ -1,32 +1,37 @@
-const express = require("express")
-const Router = express.Router()
-const mysqlConnection = require("../connections")
+// import
+const sql     = require('../connections') // connected db
+const express = require('express')
+const router  = express.Router() // express route handler
 
-
-//------- Get all Acronyms and what they stand for ------------
-Router.get("/", (req,res) =>{
-  mysqlConnection.query(`
+// get all acronyms and what they stand for
+router.get("/", (req,res) =>{
+  sql.query(`
     SELECT * FROM acronyms;`, 
   (err, rows, fields)=>{
     if(err) throw err
     res.end(JSON.stringify(rows))
-  })// query
-})
+  })
+})// get what acronym stands for by acronym
 
+// get what acronym stands for by acronym
+router.get("/help/:acronymName", (req,res) =>{
+  let acro = req.params.acronymName
+  sql.query(`
+    SELECT * FROM acronyms WHERE acronym = '${acro}';`, 
+  (err, rows, fields)=>{
+    if(err) throw err
+    res.end(JSON.stringify(rows))
+  })
+})// get what acronym stands for by acronym
 
-// ------- Get what specific acronym stands for -------------------
-Router.get("/help/:acronymName", (req,res) =>{
-    let acro = req.params.acronymName
-    mysqlConnection.query(`
-        SELECT *
-        FROM acronyms
-        WHERE acronym = '${acro}';`, 
-    (err, rows, fields)=>{
+module.exports = router
+
+/*
+// get all acronyms
+router.get('/', (req,res) => {
+    sql.query('SELECT * FROM acronyms;' , (err, rows, fields) => {
         if(err) throw err
         res.end(JSON.stringify(rows));
     })
-})
-
-
-
-module.exports = Router // export
+})// get acronyms tbl
+*/

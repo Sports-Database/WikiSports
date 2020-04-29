@@ -21,7 +21,7 @@ import Steals    from '../components/Steals'
 import Season   from '../components/Season'
 import MostChampionships from '../components/MostChampionships'
 
-const HOMEURL = 'http://localhost:3000'
+const HOMEURL = 'http://localhost:80'
 const APIURL  = 'http://localhost:8080'
 
 export class Search extends React.Component {  
@@ -286,6 +286,7 @@ export class Search extends React.Component {
   }
 
   async goToTeam(tName) {
+    console.log('should go to team')
     await this.setState({searchQuery: tName})
     await this.updateTeamData()
     await this.setState({queryType:'<teamName>'})

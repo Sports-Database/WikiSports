@@ -1,40 +1,50 @@
-const express = require("express")
-const Router = express.Router()
-const mysqlConnection = require("../connections")
+// import
+const sql     = require('../connections') // connected db
+const express = require('express')
+const router  = express.Router() // express route handler
 
+//http://localhost:8080
 
-//
-//------------------ /players -----------------------
-Router.get('/', (req,res) => {
-  mysqlConnection.query(`
-    SELECT players.name FROM players;`,
+// /players
+router.get('/', (req,res) => {
+  sql.query(`
+    SELECT * FROM players;`,
     (err, rows, fields) => {
       if(err) throw err
-      res.end(JSON.stringify(rows));
-  })// query
+      res.end(JSON.stringify(rows))
+  })
 })// get player ids and player names
 
-
-// /player name by search query and also get the url
-Router.get('/:playerName', (req,res) => {
-    let pName = req.params.playerName
-    mysqlConnection.query(`
-        SELECT p.name, p.url 
-        FROM players p
-        WHERE p.name LIKE '%${pName}%';` ,
-        (err, rows, fields) => {
-            if(err) throw err
-            res.end(JSON.stringify(rows));
-    })// query
-  })// get player ids and player names
+router.get('/id/:id', (req,res) => {
+  let id = req.params.id
+  sql.query(`
+    SELECT p.name, p.url
+    FROM players p
+    WHERE p.id = ${id};` ,
+  (err, rows, fields) => {
+    if(err) throw err
+    res.end(JSON.stringify(rows))
+  })
+})
 
 
-
+// /player name by search query
+router.get('/:playerName', (req,res) => {
+  let pName = req.params.playerName
+  sql.query(`
+      SELECT p.name, p.url
+      FROM players p
+      WHERE p.name LIKE '%${pName}%';` ,
+    (err, rows, fields) => {
+      if(err) throw err
+      res.end(JSON.stringify(rows))
+  })
+})
 
 // /players/teams/<playerName>
-Router.get('/team/:playerName', (req,res) => {
+router.get('/team/:playerName', (req,res) => {
   let pName = req.params.playerName
-  mysqlConnection.query(`
+  sql.query(`
     SELECT t.name
     FROM teams t
     INNER JOIN rosters r ON r.teamId = t.id
@@ -45,10 +55,8 @@ Router.get('/team/:playerName', (req,res) => {
     LIMIT 1;`,
       (err, rows, fields) => {
           if(err) throw err
-          res.end(JSON.stringify(rows));
-  })// query
+          res.end(JSON.stringify(rows))
+  })
 })// get most recent team a player has played for by player name
 
-
-
-module.exports = Router
+module.exports = router

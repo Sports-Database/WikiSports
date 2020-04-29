@@ -6,7 +6,8 @@ var mysqlConnection = mysql.createConnection({
     port: "3306",
     user: "wiki-sport-main",
     password: "wikisport",
-    database: "wiki_sports"
+    database: "wiki_sports",
+    multipleStatements: true
   });
   
   

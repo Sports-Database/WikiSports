@@ -8,7 +8,7 @@ const router  = express.Router() // express route handler
 // /teams
 router.get('/', (req, res) => {
   sql.query(`
-    SELECT teams.name FROM teams;`,
+    SELECT * FROM teams;`,
     (err, rows, field) => {
       if(err) throw err
     res.end(JSON.stringify(rows))
@@ -79,7 +79,7 @@ sql.query(`
     INNER JOIN players p ON p.id = r.playerId
     INNER JOIN (SELECT MAX(id) as current_year FROM seasons s) s ON s.current_year = r.seasonId
     WHERE t.name like '%${tName}%';`, 
-(err, rows, fields) => {
+  (err, rows, fields) => {
     if(err) throw err
     res.end(JSON.stringify(rows))
 })
@@ -88,14 +88,14 @@ sql.query(`
 // get most recent champions from 2019
 router.get("/champs/championRoster", (req,res) => {
   sql.query(`
-    SELECT DISTINCT p.name as playerName, t.name as teamName FROM league l
+    SELECT DISTINCT p.id, p.name as playerName, t.name as teamName FROM league l
     INNER JOIN teams t ON t.id = l.championId
     INNER JOIN rosters r ON r.teamId = t.id
     INNER JOIN players p ON p.id = r.playerId
     WHERE l.seasonId = 3;`, 
   (err, rows, fields) => {
     if(err) throw err
-    console.log(rows)
+    //console.log(rows)
     res.end(JSON.stringify(rows))
   })// query
 })// get champions
