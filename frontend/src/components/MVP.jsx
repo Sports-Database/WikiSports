@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Row, Col, Container } from 'react-bootstrap'
+import { Table, Container } from 'react-bootstrap'
 import axios from 'axios'
+import {APIURL} from "./URL.jsx"
 
 const MVP = () => {
 
   const [ mvpData, setMvpData ] = useState([])
 
-  const APIURL  = 'http://localhost:8080'
 
   function updateMVPs() {
     axios
@@ -26,10 +26,10 @@ const MVP = () => {
       <Table className='table-striped'>
         <thead className='thead-dark'><tr><th>Name</th><th>Year</th></tr></thead>
         {mvpData.map((el,i) =>
-          <Row key={i}>
-            <Col><img src={'https://' + el['url']} alt='playerImg'/><br/>{el['name']}</Col>
-            <Col>{el['season']}</Col>
-          </Row>)}
+          <tr key={i}>
+            <td><img src={'https://' + el['url']} alt='playerImg'/><br/>{el['name']}</td>
+            <td>{el['season']}</td>
+          </tr>)}
       </Table>
     </Container>
 )}

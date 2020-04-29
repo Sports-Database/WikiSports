@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Container }           from 'react-bootstrap'
 import axios                          from 'axios'
+import { Link }                       from 'react-router-dom'
+import {APIURL} from "./URL.jsx"
+import {HOMEURL} from "./URL.jsx"
 
 const Team = props => {
 
@@ -10,8 +13,8 @@ const Team = props => {
   const [ titles  , setTitles   ] = useState()
   const [ articles, setArticles ] = useState()
   const [ roster  , setRoster   ] = useState()
+  const [ players , setPlayers  ] = useState()
 
-  const APIURL  = 'http://localhost:8080'
 
   useEffect(() => {
     initTeamData(props.match.params.id)
@@ -19,6 +22,9 @@ const Team = props => {
   },[props.match.params.id])
 
   const initTeamData = id => {
+    axios
+      .get(APIURL + '/players')
+      .then(res => setPlayers(res.data))
     axios
       .get(APIURL + '/teams')
       .then(res => {
@@ -40,6 +46,12 @@ const Team = props => {
       }}})
   }
 
+  const getId = pName => {
+    for(let obj of players)
+      if(obj.name===pName) 
+        return obj.id
+  }
+
   const resetStates = () => {
     setTeamName(undefined)
     setTeamUrl(undefined)
@@ -54,7 +66,7 @@ const Team = props => {
   const numberWithCommas = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   return (
-    roster===undefined? <></> :
+    roster===undefined || articles===undefined ? <></> :
     <Container>
       <h3>{teamName}</h3>
       <img src={'https://' + teamUrl} height='250' alt='Team'/>
@@ -67,7 +79,16 @@ const Team = props => {
       </ol>
       <Table id='stats'>
         <thead className='thead-dark'><tr><th>Team Roster</th></tr></thead>
-        <tbody>{roster.map((obj, i) => <tr key={i}><td>{obj.name}</td></tr>)}</tbody>
+        <tbody>{
+          roster.map((obj, i) => 
+            <tr key={i}>
+              <td>
+                <Link onClick={() => window.location = HOMEURL + '/players/' + getId(obj.name)}>
+                  {obj.name}
+                </Link>
+              </td>
+            </tr>)}
+        </tbody>
       </Table>
     </Container>)
 }

@@ -3,7 +3,6 @@ const sql     = require('../connections') // connected db
 const express = require('express')
 const router  = express.Router() // express route handler
 
-//http://localhost:8080
 
 // /teams
 router.get('/', (req, res) => {

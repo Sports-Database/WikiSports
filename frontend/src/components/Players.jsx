@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Table, Container } from 'react-bootstrap'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import {APIURL} from "./URL.jsx"
 
 const Players = () => {
 
   const [ players, setPlayers ] = useState()
 
-  const APIURL  = 'http://localhost:8080'
 
   function getPlayers() {
     axios

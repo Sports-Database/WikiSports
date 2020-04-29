@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Container }           from 'react-bootstrap'
 import axios                          from 'axios'
-
+import {APIURL} from "./URL.jsx"
 const Player = props => {  
   const [ name, setName ] = useState()
   const [ url , setUrl  ] = useState()
@@ -13,7 +13,6 @@ const Player = props => {
   const [ earnings, setEarnings ] = useState()
   const [ stats, setStats ] = useState()
 
-  const APIURL  = 'http://localhost:8080'
 
   useEffect(() => {
     initData(props.match.params.id)
@@ -78,7 +77,15 @@ const Player = props => {
       <h4>Career Stats</h4>
       <Table id='career' className='table-bordered'>
         <thead className='thead-dark'><tr>{renderCareerTableHeader()}</tr></thead>
-        <tbody><tr><td>{numberWithCommas(points)}</td><td>{rebounds}</td><td>{assists}</td><td>{steals}</td><td>{earnings}</td></tr></tbody>
+        <tbody>
+          <tr>
+            <td>{numberWithCommas(points)}</td>
+            <td>{numberWithCommas(rebounds)}</td>
+            <td>{numberWithCommas(assists)}</td>
+            <td>{numberWithCommas(steals)}</td>
+            <td>{numberWithCommas(earnings)}</td>
+          </tr>
+        </tbody>
       </Table>
       <h4>Seasonal Stats</h4>
       <Table id='stats' className='table-bordered'>

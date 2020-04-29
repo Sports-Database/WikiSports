@@ -20,9 +20,8 @@ import Assists   from '../components/Assists'
 import Steals    from '../components/Steals'
 import Season   from '../components/Season'
 import MostChampionships from '../components/MostChampionships'
-
-const HOMEURL = 'http://localhost:80'
-const APIURL  = 'http://localhost:8080'
+import {APIURL} from "./URL.jsx"
+import {HOMEURL} from "./URL.jsx"
 
 export class Search extends React.Component {  
   state = {

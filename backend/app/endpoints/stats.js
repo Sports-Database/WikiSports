@@ -3,14 +3,6 @@ const sql     = require('../connections') // connected db
 const express = require('express')
 const router  = express.Router() // express route handler
 
-/*
-end points
-http://localhost:8080
-
-/stats/careerStats/<playerName>
-/stats/earnings/<playerName>
-/stats/seasonal/<player name>
-*/
 
 // /stats/careerStats/<playerName>
 router.get("/career/:playerName", (req,res) =>{

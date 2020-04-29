@@ -25,13 +25,3 @@ router.get("/help/:acronymName", (req,res) =>{
 })// get what acronym stands for by acronym
 
 module.exports = router
-
-/*
-// get all acronyms
-router.get('/', (req,res) => {
-    sql.query('SELECT * FROM acronyms;' , (err, rows, fields) => {
-        if(err) throw err
-        res.end(JSON.stringify(rows));
-    })
-})// get acronyms tbl
-*/

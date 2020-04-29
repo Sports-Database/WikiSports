@@ -4,9 +4,8 @@ import { Button, Form, Dropdown } from 'react-bootstrap/'
 import { Link }                   from 'react-router-dom'
 import Logo                       from '../assets/logo.png'
 import Unknown                    from './Unknown'
-
-const HOMEURL = 'http://localhost:80'
-const APIURL  = 'http://localhost:8080'
+import {APIURL} from "./URL.jsx"
+import {HOMEURL} from "./URL.jsx"
 
 export default class Home extends React.Component {  
   state = {

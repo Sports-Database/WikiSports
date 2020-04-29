@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Container } from 'react-bootstrap'
 import axios from 'axios'
+import {APIURL} from "./URL.jsx"
 
 const Most = () => {
 
   const [ mostChampionshipsData, setMostChampionshipsData ] = useState()
 
-  const APIURL  = 'http://localhost:8080'
 
   function updateMostChampionshipsData() {
     axios
