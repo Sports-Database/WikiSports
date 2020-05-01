@@ -69,7 +69,7 @@ const Player = props => {
       num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
   return (
-    stats===undefined? <></> :
+    earnings === undefined || stats===undefined? <></> :
     <Container>
       <h3>{name}</h3>
       <img src={'https://' + url} height='250' alt='Player'/>
