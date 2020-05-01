@@ -6,7 +6,8 @@ var mysqlConnection = mysql.createConnection({
     port: "3306",
     user: "wiki-sport-main",
     password: "wikisport",
-    database: "wiki_sports"
+    database: "wiki_sports",
+    multipleStatements: true
   });
   
   
@@ -14,7 +15,7 @@ var mysqlConnection = mysql.createConnection({
   //Open Connection
   mysqlConnection.connect(function(err) {
         if (err) console.log('Could not connect to wiki_sports database')
-	else     console.log('Connected to wiki_sports database!')
+	      else     console.log('Connected to wiki_sports database!')
   });
 
   module.exports = mysqlConnection

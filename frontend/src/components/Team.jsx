@@ -1,34 +1,96 @@
-import React from 'react'
-import Table from 'react-bootstrap/Table'
+import React, { useState, useEffect } from 'react'
+import { Table, Container }           from 'react-bootstrap'
+import axios                          from 'axios'
+import { Link }                       from 'react-router-dom'
+import {APIURL} from "./URL.jsx"
+import {HOMEURL} from "./URL.jsx"
 
-const Team = (props) => {
-  const displayChampionships = () => props.teamData.championships.length ? displayYears() : 'None'
-  const displayYears = () => props.teamData.championships[0]
-  const renderTable = () => {
-    let rows = []
-    props.teamData.roster.map((name, index) => rows.push(<tr key={index}><td>{name}</td></tr>))
-    return <>{rows}</>
+const Team = props => {
+
+  const [ teamName, setTeamName ] = useState()
+  const [ teamUrl , setTeamUrl  ] = useState()
+  const [ fanbase , setFanbase  ] = useState()
+  const [ titles  , setTitles   ] = useState()
+  const [ articles, setArticles ] = useState()
+  const [ roster  , setRoster   ] = useState()
+  const [ players , setPlayers  ] = useState()
+
+
+  useEffect(() => {
+    initTeamData(props.match.params.id)
+    return () => resetStates()
+  },[props.match.params.id])
+
+  const initTeamData = id => {
+    axios
+      .get(APIURL + '/players')
+      .then(res => setPlayers(res.data))
+    axios
+      .get(APIURL + '/teams')
+      .then(res => {
+        for(let obj of res.data) {
+          if(obj.id===parseInt(id)) {
+            setTeamName(obj.name)
+            setTeamUrl(obj.url)
+            setFanbase(obj.fanbase)
+            axios
+              .get(APIURL + '/teams/titles/' + obj.name)
+              .then(res => res.data.forEach(obj => {if(obj.wonTitle) setTitles(obj.season)}))
+            axios
+              .get(APIURL + '/teams/articles/' + obj.name)
+              .then(res => setArticles(res.data))
+            axios
+              .get(APIURL + '/teams/players/' + obj.name)
+              .then(res => setRoster(res.data))
+            break
+      }}})
   }
 
-  // that img link is a celtics img link
+  const getId = pName => {
+    for(let obj of players)
+      if(obj.name===pName) 
+        return obj.id
+  }
+
+  const resetStates = () => {
+    setTeamName(undefined)
+    setTeamUrl(undefined)
+    setFanbase(undefined)
+    setTitles(undefined)
+    setArticles(undefined)
+    setRoster(undefined)
+  }
+
+  const displayChampionships = () => titles ? titles : 'None'
+
+  const numberWithCommas = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
   return (
-    <>
-      <h3>{props.teamData.teamName}</h3>
-      <img src={'https://' + props.teamData.url} height='250' alt='Team'/>
-      <h5>Championships: {displayChampionships()}</h5><br/>
+    roster===undefined || articles===undefined ? <></> :
+    <Container>
+      <h3>{teamName}</h3>
+      <img src={'https://' + teamUrl} height='250' alt='Team'/>
+      <h5>Championships: {displayChampionships()}</h5>
+      <h5>Fanbase: {numberWithCommas(fanbase)}</h5><br/>
       <h6>Useful Links:</h6>
       <ol>
-        <li><a href={'https://' + props.teamData.articles[0]['url']}>{props.teamData.articles[0]['url']}</a></li>
-        <li><a href={'https://' + props.teamData.articles[0]['url']}>{props.teamData.articles[1]['url']}</a></li>
+        <li><a href={'https://' + articles[0]['url']}>{articles[0]['url']}</a></li>
+        <li><a href={'https://' + articles[0]['url']}>{articles[1]['url']}</a></li>
       </ol>
       <Table id='stats'>
-        <thead className='thead-dark'><tr><th>Current Roster</th></tr></thead>
-        <tbody>{renderTable()}</tbody>
+        <thead className='thead-dark'><tr><th>Team Roster</th></tr></thead>
+        <tbody>{
+          roster.map((obj, i) => 
+            <tr key={i}>
+              <td>
+                <Link onClick={() => window.location = HOMEURL + '/players/' + getId(obj.name)}>
+                  {obj.name}
+                </Link>
+              </td>
+            </tr>)}
+        </tbody>
       </Table>
-    </>
-  )
+    </Container>)
 }
 
 export default Team
-
-// <img src='https://placehold.it/150x150' alt='Player'/>
